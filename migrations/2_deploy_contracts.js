@@ -1,6 +1,6 @@
-const verify = artifacts.require("Verify");
+const VerifySignature = artifacts.require("VerifySignature");
 
 
 module.exports = function(deployer) {
-  deployer.deploy(verify);
+  deployer.deploy(VerifySignature);
 };

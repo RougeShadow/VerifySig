@@ -15,10 +15,6 @@ contract VerifySignature {
         pure
         returns (bytes32)
     {
-        /*
-        Signature is produced by signing a keccak256 hash with the following format:
-        "\x19Ethereum Signed Message\n" + len(msg) + msg
-        */
         return
             keccak256(
                 abi.encodePacked("\x19Ethereum Signed Message:\n32", _messageHash)
