@@ -1,30 +1,66 @@
-import React from "react";
-import { DrizzleContext } from "@drizzle/react-plugin";
-import { Drizzle } from "@drizzle/store";
-import drizzleOptions from "./drizzleOptions";
-import MyComponent from "./MyComponent";
-import "./App.css";
 
-const drizzle = new Drizzle(drizzleOptions);
+import { createTheme , ThemeProvider , makeStyles} from '@material-ui/core/styles';
+import './App.css';
+import {useState} from 'react';
+import { Box, TextField, typography } from '@material-ui/core';
+import CustomBtn from './components/CustomBtn';
+import { CssBaseline } from '@material-ui/core';
 
-const App = () => {
+var message = ""
+const theme = createTheme({
+  palette: {
+    type:'dark',
+  },
+    h4: {
+      fontWeight: 600,
+      fontSize: 28,
+      lineHeight: '2rem',
+      },
+    h5: {
+      fontWeight: 100,
+      lineHeight: '2rem',
+    },
+  },
+);
+const styles = makeStyles({
+
+  input: {
+    color:"white"
+  },
+});
+function App(props) {
+  const classes = styles();
+  
+  const [textInput, setTextInput] = useState('');
+  const [buttonPress, submit] = useState('');
+  const handleButtonPress = e => {
+    
+  }
+  const handleTextInputChange = event => {
+    console.log(event.target.value);
+    assestTagQuery = event.target.value
+    setTextInput(event.target.value);
+    };
+
+
   return (
-    <DrizzleContext.Provider drizzle={drizzle}>
-      <DrizzleContext.Consumer>
-        {drizzleContext => {
-          const { drizzle, drizzleState, initialized } = drizzleContext;
 
-          if (!initialized) {
-            return "Loading..."
-          }
+    <div className="App">
+      <TextField value= {textInput} onChange= {handleTextInputChange} InputProps={{className: classes.input}} label="Message"/>
+      
+      <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box textAlign='center'>
+      <CustomBtn onclick=""  sx = {{}} variaint = 'contained' txt="submit">
+      </CustomBtn>
+      </Box>
+      </ThemeProvider>
+    </div>
 
-          return (
-            <MyComponent drizzle={drizzle} drizzleState={drizzleState} />
-          )
-        }}
-      </DrizzleContext.Consumer>
-    </DrizzleContext.Provider>
+
   );
 }
+
+
 
 export default App;
