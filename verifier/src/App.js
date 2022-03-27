@@ -2,56 +2,27 @@ import { createTheme , ThemeProvider , makeStyles} from '@material-ui/core/style
 import './App.css';
 import React from 'react';
 import {useState} from 'react';
-import { Box, TextField, typography } from '@material-ui/core';
-import CustomBtn from './components/CustomBtn';
+import { Box, TextField} from '@material-ui/core';
 import { CssBaseline } from '@material-ui/core';
-import contractJson from './abis/VerifySignature.json'
 import './App.css';
 import Web3 from "web3"
-import detectEthereumProvider from '@metamask/detect-provider'
-import { verify } from 'crypto';
-var Accounts = require('web3-eth-accounts');
 console.log("Logs working")
-var contract = require("@truffle/contract");
-var $ = require("jquery")
-var fs = require("fs")
+
 var web3
 const { abi } = require('./abis/VerifySignature.json');
 var Contract = require('web3-eth-contract');
 
 
-
-
-
-function  startApp(provider) {
-  // If the provider returned by detectEthereumProvider is not the same as
-  // window.ethereum, something is overwriting it, perhaps another wallet.
-  if (provider !== window.ethereum) {
-    console.error('Do you have multiple wallets installed?');
-  }
-
- 
-  
-}
 if (typeof window.ethereum !== 'undefined') {
     console.log('MetaMask is installed!');
   }
 
-function getAccounts(callback) {
-  Web3.eth.getAccounts((error,result) => {
-      if (error) {
-          console.log(error);
-      } else {
-          callback(result);
-      }
-  });
-}
 window.addEventListener('load', async () => {
     // Modern dapp browsers...
     if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum);
+        web3 = new Web3(window.ethereum);
         try {
-            window.ethereum.request({ method: 'eth_requestAccounts' });
+            await window.ethereum.request({ method: 'eth_requestAccounts' });
             // Request account access if needed
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             // Acccounts now exposed
@@ -78,21 +49,7 @@ web3 = new Web3(window.ethereum)
 const theme = createTheme({
   palette: {
     type:'dark',
-  },
-  typography: {
-    fontFamily: [
-      'Roboto'
-    ],
-    h4: {
-      fontWeight: 600,
-      fontSize: 28,
-      lineHeight: '2rem',
-      },
-    h5: {
-      fontWeight: 100,
-      lineHeight: '2rem',
-    },
-  },
+  }
 });
 const styles = makeStyles({
 
@@ -100,8 +57,7 @@ const styles = makeStyles({
     color:"white"
   },
 });
-var message = ""
-var _hashMessage = ""
+
 function _text(props) {
   return(<p variant='contained'>{props.txt}</p>)
 
@@ -120,8 +76,6 @@ account = web3.eth.getAccounts().then(
 function App() {
   const classes = styles();
   const [textInput, setTextInput] = useState('');
-  const [signature, setSignature] = useState('')
-  const [buttonPress, submit] = useState('');
   const [hashText, setHashText]= useState('')
   const [signedHashText, setSignedHashText]= useState('')
 
@@ -138,7 +92,6 @@ function App() {
     await web3.eth.sign(getEthSignedMessageHash,account[0], function(err, _signature) {
       console.log(account[0])
       console.log('signature: ' + _signature);
-      setSignature(_signature)
       _hashText = _signature
       console.log(_hashText)
     })}
